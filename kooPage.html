@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>SUKUNA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <center>
+            <div id="output"></div>
+        </center>
+    </div>
+    <button id="logout" onclick="logout()" class="btn btn-danger">Logout🚪</button>
+    <script>
+        firebaseConfig = {
+            apiKey: "AIzaSyD6w185gwufIYtLm14OlYXU5IZRyxRXkSE",
+            authDomain: "projeto-appweb.firebaseapp.com",
+            databaseURL: "https://projeto-appweb-default-rtdb.firebaseio.com",
+            projectId: "projeto-appweb",
+            storageBucket: "projeto-appweb.appspot.com",
+            messagingSenderId: "530514682421",
+            appId: "1:530514682421:web:2f4d45442148c38842077c",
+            measurementId: "G-46RY8NE96T"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        function getData() {
+            firebase.database().ref("/").on('value', function(snapshot) {
+                document.getElementById("output").innerHTML = "";
+                var roomNamesList = "";
+                snapshot.forEach(function(childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    var roomNames = childKey;
+                    // Início do código
+                    roomNamesList += roomNames + " ";
+                    document.getElementById("output").innerHTML += `
+                        <div onclick="redirectToRoomName('')" class="room_name">${roomNames}</div>`;
+                    // Fim do código
+                });
+                console.log(roomNamesList); // Apenas para verificação
+            });
+        }
+        getData();
+
+        function redirectToRoomName() {
+            localStorage.setItem("room_name", name);
+            window.location = "koo_room.html";
+        }
+
+        function logout() {
+            localStorage.removeItem("id");
+            window.location = "index.html";
+        }
+    </script>
+    <style>
+        body {
+            background-image: url(c5c7d5f891b311f3618b020875480b49.jpg);
+            background-size: cover;
+        }
+        #output {
+            font-size: 2em;
+            color: cyan; 
+        }
+        .room_name {
+            cursor: pointer;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            display: inline-block;
+        }
+        .room_name:hover {
+            background-color: #ddd;
+        }
+    </style>
+</body>
+</html>
